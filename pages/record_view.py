@@ -49,6 +49,7 @@ updated_values = {}
 
 with col1:
     st.html("<h3 style='color: MediumBlue'> Gene Info </h3>") # immutable fields
+    st.html(col1_fields)
     for col in col1_fields:
         st.html("<b>{}: </b> {}".format(col, str(record[col]) )) 
     st.html("<hr /><h3 style='color: MediumBlue'> Normalised Expression in clusters / cell types</h3>")
