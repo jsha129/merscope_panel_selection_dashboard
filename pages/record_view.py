@@ -52,6 +52,7 @@ with col1:
     st.html(col1_fields)
     for col in col1_fields:
         st.html("<b>{}: </b> {}".format(col, str(record[col]) )) 
+        
     st.html("<hr /><h3 style='color: MediumBlue'> Normalised Expression in clusters / cell types</h3>")
     st.bar_chart(df_bargraph.iloc[idx], x_label="Normalised Exp", horizontal = True)
     
