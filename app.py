@@ -6,7 +6,9 @@ import pandas as pd
 @st.cache_data
 def load_data(uploaded_file):
     df = pd.read_excel(uploaded_file,sheet_name = "Sheet1", nrows = 1000)
-    df = df.rename(columns={'DE_in_some': 'DE_in_some_cells', 'is_DE_BS_EC': 'DE_in_Bstem_Endothelial'})
+    df = df.rename(columns={'DE_in_some': 'DE_in_some_cells', 
+                            'is_DE_BS_EC': 'DE_in_Bstem_Endothelial',
+                            'is_maria_genes': 'is_member_of_Maria_genelist'})
     df = df.sort_values(by = 'gene').reset_index()
     df = df.drop(columns = 'index')
     return df
