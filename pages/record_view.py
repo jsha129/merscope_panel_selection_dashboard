@@ -34,13 +34,15 @@ st.title(f"Record {idx + 1} / {len(df)}")
 # st.html(df.columns)
 
 st.html('<hr />')
-col1, col2, col3 = st.columns(3)
-col1_fields  = ["gene", 'is_maria_genes', 'gene_marker_of_cells', 'description', 'gene_summary'] # immutable
+col1, col2, col3, col4 = st.columns(4)
+col1_fields  = ["gene", 'is_member_of_Maria_genelist', 'gene_marker_of_cells', 'description', 'gene_summary'] # immutable
 col2_fields = []
-inactive_chkbox_fields = [c for c in df.columns if re.search("DE", c) or re.search("PATHWAY", c) ]
+inactive_chkbox_fields = [c for c in df.columns if re.search("DE", c) and c != 'DE_in_some_cells' ]
 # ['is_DE_BS_EC'] # inactive checkbox
 col2_fields.extend(inactive_chkbox_fields)
 col2_fields.sort()
+col3_fields = [c for c in df.columns if re.search("PATHWAY", c) ]
+
 
 
 updated_values = {}
@@ -49,21 +51,32 @@ with col1:
     st.html("<h3 style='color: MediumBlue'> Gene Info </h3>") # immutable fields
     for col in col1_fields:
         st.html("<b>{}: </b> {}".format(col, str(record[col]) )) 
-
+    st.html("<hr /><h3 style='color: MediumBlue'> Normalised Expression in clusters / cell types</h3>")
+    st.bar_chart(df_bargraph.iloc[idx], x_label="Normalised Exp", horizontal = True)
+    
 with col2:
     st.html("<h3 style='color: MediumBlue'>Selection Criteria</h3>")
+    st.html('DIPG vs Control in Bstem. "c1" means cluster 1 of unfiltered scRNA data')
     for col in col2_fields:
         if col == 'isFinalInclude':
             updated_values[col] = st.checkbox('Add to Panel Design', record[col], key = f"{col}_{idx}") 
         elif col in inactive_chkbox_fields:
             st.checkbox(col, record[col], disabled= True)
         else:
-            st.html("<b>{}: </b> {}".format(col, str(record[col]) )) 
-
-with col3:
-    st.bar_chart(df_bargraph.iloc[idx], x_label="Normalised Exp", horizontal = True)
+            st.html("<b>{}: </b> {}".format(col, str(record[col]) ))
     updated_values['Notes'] = st.text_area('Notes', record['Notes'], height = "stretch", key = f"Notes_{idx}")
     updated_values['isFinalInclude'] = st.checkbox('Add to Panel Design', record['isFinalInclude'], key = f"isFinalInclude_{idx}") 
+
+
+with col3:
+    st.html("<h3 style='color: MediumBlue'>Involvement in Pathways </h3>")
+    for col in col3_fields[:12]:
+        st.checkbox(re.sub('PATHWAY_', '', col), record[col], disabled= True)
+
+with col4:
+    for col in col3_fields[12::]:
+        st.checkbox(re.sub('PATHWAY_', '', col), record[col], disabled= True)
+       
     
 
 ## -- navigations
