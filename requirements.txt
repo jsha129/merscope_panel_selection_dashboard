@@ -3,5 +3,7 @@ matplotlib
 numpy
 openpyxl
 xlsxwriter
+sqlalchemy
+
 
 
