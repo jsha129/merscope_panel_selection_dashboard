@@ -4,7 +4,7 @@ numpy
 openpyxl
 xlsxwriter
 sqlalchemy
-psycopg2
+
 
 
 
