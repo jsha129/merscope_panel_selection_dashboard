@@ -3,7 +3,8 @@ matplotlib
 numpy
 openpyxl
 xlsxwriter
-sqlalchemy
+pg8000
+
 
 
 
